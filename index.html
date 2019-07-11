@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gary Ip - monkaS</title>
+<link rel="shortcut icon" href="https://github.com/gippoo/gippoo.github.io/raw/master/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://github.com/gippoo/gippoo.github.io/raw/master/favicon.ico" type="image/x-icon">
+
+<style>
+    body {
+        font-family: "Trebuchet MS";
+    }
+    
+    a.header:link {
+        color: #bfd8ff;
+    }
+    a.header:visited {
+        color: #bfd8ff;
+    }  
+    a.header:hover {
+        color: #6da6ff;
+    }
+    
+    div.header {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        height: 54px;
+        background-color: #4a70ad;
+    }
+    
+    div.title_text {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        font-size: 24px;
+	color: white;
+    }
+    
+    div.content {
+        position: relative;
+        left: 0;
+        top: 54px;
+        right: 0;
+        font-size: 16px;
+        text-align: center;
+    }
+    
+    p {
+        margin-left: 5%; 
+        margin-right: 10%;
+    }
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+    <div class="title_text">
+    	<a class="header" href="https://gippoo.github.io/" style="text-decoration:none;">Gary Ip</a> | 
+        <a class="header" href="https://gippoo.github.io/resume/" style="text-decoration:none;">Resume</a> | 
+        <a class="header" href="https://github.com/gippoo" style="text-decoration:none;">GitHub</a> | 
+        <a class="header" href="https://www.linkedin.com/in/gary-ip27/" style="text-decoration:none;">LinkedIn</a>
+    </div>
+</div>
+
+
+<div style="position: relative; top: 54px; text-align: center; font-family: Times">
+    <figure>
+        <img src="https://vignette.wikia.nocookie.net/aceattorney/images/0/02/Maya_Fey_Portrait_AA6.png/revision/latest/scale-to-width-down/310?cb=20160407182727" width="155" height="232"/>
+        <figcaption style="font-size: 12px;">Source: https://aceattorney.fandom.com/wiki/Maya_Fey</figcaption>
+    </figure>
+    <span style="font-size:32px;">Building a Chatbot</span>
+</div>
+<div style="position: relative; top: 54px; font-size:18px; font-family: Times;">
+    <p>Imagine being able to talk to a character from a video game. To practice making chatbots using deep learning, I decided to train an LSTM neural network on dialouge spoken by Maya (pictured above) from the Phoenix Wright series.
+    </p>
+    <p>I found a <a href="https://gamefaqs.gamespot.com/ds/925589-phoenix-wright-ace-attorney/faqs/42767">game script</a> from the first game in the series. Here is a small snippet from the script:
+        <pre style="font-size:16px">
+            -Maya
+            Ph-Phoenix...?
+            
+            -Phoenix
+            Well... court will be opening
+            for session soon.
+            
+            -Maya
+            What? But wait!
+            
+            -Maya
+            Your defense attorney isn't
+            even here yet! He's not...
+            
+            -Phoenix
+            I'll be defending myself.
+            
+            -Maya
+            Whaaaat!?
+            
+            -Phoenix
+            Okay, let's do this.
+        </pre>
+    </p>
+    <p>We need to extract the lines from Maya as well as the lines she is replying to. Then we need to preprocess the text.
+    </p>
+</div>
+
+</body>
+</html>
