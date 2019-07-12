@@ -228,8 +228,7 @@ var prompt_char_to_ix = {'y': 0,
  50: 'o'}
 
 function change_div() {
-	let prompt = document.getElementById("prompt").value;
-    console.log(prompt);
+    let prompt = document.getElementById("prompt").value;
     
     let prompt_vec = [];
     
@@ -278,7 +277,7 @@ function change_div() {
 	
 	 target_seq = [];
 	 for (let i=0;i<51;i++) {
-		if (i != reply_char_to_ix[sampled_token_index]) {
+		if (i != reply_char_to_ix[sampled_char]) {
 			target_seq.push(0);	
 		} else {
 			target_seq.push(1);
@@ -288,6 +287,8 @@ function change_div() {
         
           states_value = [h, c]
 	  decoder_input = [target_seq, states_value[0], states_value[1]];
+	    
+	  console.log(decoded_sentence);
 
     }
 	
