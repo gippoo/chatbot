@@ -263,10 +263,10 @@ function change_div() {
 	
     let stop_condition = false;
     let decoded_sentence = '';
+    let decoder_input = [target_seq, states_value[0], states_value[1]];
 
 
     while (!stop_condition) {
-	let decoder_input = [target_seq, states_value[0], states_value[1]];
     	let pred = decoder.predict(decoder_input);
 	let output_tokens = pred[0];
 	let h = pred[1];
@@ -290,6 +290,7 @@ function change_div() {
 	  }
         
           states_value = [h, c]
+	  decoder_input = [target_seq, states_value[0], states_value[1]];
     }
 	
     document.getElementById("test").innerHTML += prompt+'<br>'+decoded_sentence+'<br><br>';
