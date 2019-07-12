@@ -256,12 +256,10 @@ function change_div() {
     }
 	
     target_seq = tf.tensor3d(target_seq, [1, 1, 51])
-    target_seq.print();
 	
     let stop_condition = false;
     let decoded_sentence = '';
     let decoder_input = [target_seq, states_value[0], states_value[1]];
-    console.log(decoder_input);
 
 
     while (!stop_condition) {
@@ -286,10 +284,11 @@ function change_div() {
 			target_seq.push(1);
 		}
 	  }
+	  target_seq = tf.tensor3d(target_seq, [1, 1, 51])
         
           states_value = [h, c]
 	  decoder_input = [target_seq, states_value[0], states_value[1]];
-	  console.log(decoder_input);
+
     }
 	
     document.getElementById("test").innerHTML += prompt+'<br>'+decoded_sentence+'<br><br>';
