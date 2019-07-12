@@ -266,7 +266,9 @@ function change_div() {
 	
     let decoder_input = [target_seq, states_value[0], states_value[1]];
 	
-	decoder.predict(decoder_input).print();
+    let pred = decoder.predict(decoder_input);
+	
+	console.log(pred);
 
 //     while (!stop_condition) {
 //     	decoder.predict(decoder_input)
