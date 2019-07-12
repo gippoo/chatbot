@@ -6,7 +6,7 @@
 <body>
 
 <div style="margin:auto; width:600px; font-family:monospace; font-size:18px;">
-<center><img src="https://github.com/gippoo/chatbot/raw/master/demo/maya2.jpg"></img></center>
+<center><img id="image" src="https://github.com/gippoo/chatbot/raw/master/demo/maya2.jpg"></img></center>
 <div id='input'>Type something to MayaBot and hit ENTER: <input id="prompt" autocomplete="off"></div>
 <div style="height:20px"></div>
 <div id="text" style="overflow-y: auto; height:400px"></div>
@@ -229,6 +229,9 @@ var prompt_char_to_ix = {'y': 0,
  48: '\n',
  49: 'k',
  50: 'o'}
+ 
+var gifs = ['https://thumbs.gfycat.com/EnormousIdleChickadee.webp', 'https://thumbs.gfycat.com/BogusGloriousCuscus.webp', 
+	    'https://thumbs.gfycat.com/DapperBelatedGoitered.webp'];
 
 function updateScroll(){
     var element = document.getElementById("text");
@@ -303,8 +306,10 @@ function change_div() {
 	
     document.getElementById("text").innerHTML += 'MayaBot: '+decoded_sentence+'<br><br>';
     document.getElementById("prompt").value = '';
+    document.getElementById("image").src = gifs[Math.floor(Math.random()*gifs.length)];
     updateScroll();
 
+	
 }
 
 const node = document.getElementById("prompt");
