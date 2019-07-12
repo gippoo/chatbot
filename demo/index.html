@@ -6,8 +6,8 @@
 <body>
 <script>
 async function init() {
-        const encoder = await tf.loadModel('https://gippoo.github.io/chatbot/encoder/model.json');
-        const decoder = await tf.loadModel('https://gippoo.github.io/chatbot/decoder/model.json');
+        const encoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/encoder/model.json');
+        const decoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/decoder/model.json');
         document.getElementById('test').innerText += encoder;
     }
     
