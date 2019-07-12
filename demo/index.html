@@ -265,17 +265,36 @@ function change_div() {
     let decoded_sentence = '';	
 	
     let decoder_input = [target_seq, states_value[0], states_value[1]];
-	
-    let pred = decoder.predict(decoder_input);
-	
-	console.log(pred);
 
-//     while (!stop_condition) {
-//     	decoder.predict(decoder_input)
-//     }
+
+    while (!stop_condition) {
+    	let pred = decoder.predict(decoder_input);
+	let output_tokens = pred[0];
+	let h = pred[1];
+	let c = pred[2];
+	
+	let sampled_token_index = output_tokens.squeeze().dataSync();
+	let sampled_char = reply_ix_to_char[sampled_token_index]
+        decoded_sentence += sampled_char
+	    
+	if (sampled_char == '\n' || decoded_sentence.length > 92):
+            stop_condition = true
+	
+	 target_seq = [];
+	 for (let i=0;i<51;i++) {
+		if (i != reply_char_to_ix[sampled_token_index]) {
+			target_seq.push(0);	
+		} else {
+			target_seq.push(1);
+		}
+	  }
+        
+          states_value = [h, c]
+    }
 	
     document.getElementById("test").innerHTML += prompt;
     document.getElementById("test").innerHTML += '<br>';
+    document.getElementById("test").innerHTML += decoded_sentence;
     document.getElementById("prompt").value = '';
 
 }
