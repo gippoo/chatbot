@@ -264,7 +264,7 @@ function change_div() {
     let stop_condition = false;
     let decoded_sentence = '';	
 	
-    let decoder_input = [target_seq, states_value];
+    let decoder_input = [target_seq, states_value[0], states_value[1]];
 	
 	decoder.predict(decoder_input).print();
 
