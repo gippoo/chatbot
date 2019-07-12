@@ -9,7 +9,7 @@
 <center><img src="http://pm1.narvii.com/6852/ca67f7bb4c04a91910d446b7850cc4a32ae86726v2_00.jpg"></img></center>
 <div id='input'>Type something to MayaBot and hit ENTER: <input id="prompt" autocomplete="off"></div>
 <div style="height:20px"></div>
-<div id="test" style="overflow-y: auto; height:400px"></div>
+<div id="text" style="overflow-y: auto; height:400px"></div>
 </div>
 
 <script>
@@ -230,9 +230,14 @@ var prompt_char_to_ix = {'y': 0,
  49: 'k',
  50: 'o'}
 
+function updateScroll(){
+    var element = document.getElementById("text");
+    element.scrollTop = element.scrollHeight;
+}
+ 
 function change_div() {
     let prompt = document.getElementById("prompt").value;
-    document.getElementById("test").innerHTML += 'You: '+prompt+'<br>';
+    document.getElementById("text").innerHTML += 'You: '+prompt+'<br>';
 	
     let prompt_vec = [];
     
@@ -294,8 +299,9 @@ function change_div() {
 	  
     }
 	
-    document.getElementById("test").innerHTML += 'MayaBot: '+decoded_sentence+'<br><br>';
+    document.getElementById("text").innerHTML += 'MayaBot: '+decoded_sentence+'<br><br>';
     document.getElementById("prompt").value = '';
+    updateScroll();
 
 }
 
