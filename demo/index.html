@@ -10,6 +10,11 @@
 
 
 <script>
+async function init() {
+    	encoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/encoder/model.json');
+	decoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/decoder/model.json');
+}
+	
 var prompt_char_to_ix = {'y': 0,
  '[': 1,
  '2': 2,
@@ -240,8 +245,10 @@ function change_div() {
     one_hot.print();
     
     let states_value = encoder.predict(one_hot);
+	
+    console.log(states_value);
     
-	document.getElementById("test").innerHTML += prompt;
+    document.getElementById("test").innerHTML += prompt;
     document.getElementById("test").innerHTML += '<br>';
     document.getElementById("prompt").value = '';
 
