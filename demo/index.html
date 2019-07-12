@@ -243,12 +243,12 @@ function change_div() {
     
     let one_hot = tf.oneHot(tf.tensor1d(prompt_vec, 'int32'), 52);
 
-	one_hot.reshape([1,89,52]);
+    let input = one_hot.reshape([1,89,52]);
 
     
     one_hot.print();
     
-    let states_value = encoder.predict(one_hot);
+    let states_value = encoder.predict(input);
 	
     console.log(states_value);
     
