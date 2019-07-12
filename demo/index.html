@@ -237,6 +237,8 @@ function updateScroll(){
  
 function change_div() {
     let prompt = document.getElementById("prompt").value;
+    prompt = prompt.toLowerCase();
+
     document.getElementById("text").innerHTML += 'You: '+prompt+'<br>';
 	
     let prompt_vec = [];
