@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+</head>
+<body>
+<script>
+async function init() {
+        const encoder = await tf.loadModel('https://gippoo.github.io/chatbot/encoder/model.json');
+        const decoder = await tf.loadModel('https://gippoo.github.io/chatbot/decoder/model.json');
+        document.getElementById('test').innerText += encoder;
+    }
+    
+init()
+</script>
+<div id='test'></div>
+</body>
+</html>
