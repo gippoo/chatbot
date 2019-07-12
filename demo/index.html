@@ -239,15 +239,12 @@ function change_div() {
     while (prompt_vec.length < 89) {
     	prompt_vec.push(52);
     }
-    console.log(prompt_vec);
     
     let one_hot = tf.oneHot(tf.tensor1d(prompt_vec, 'int32'), 52);
 
     let input = one_hot.reshape([1,89,52]);
     
     let states_value = encoder.predict(input);
-
-    console.log(states_value);
     
     let target_seq = [];
     for (let i=0;i<51;i++) {
@@ -264,6 +261,7 @@ function change_div() {
     let stop_condition = false;
     let decoded_sentence = '';
     let decoder_input = [target_seq, states_value[0], states_value[1]];
+    console.log(decoder_input);
 
 
     while (!stop_condition) {
@@ -291,6 +289,7 @@ function change_div() {
         
           states_value = [h, c]
 	  decoder_input = [target_seq, states_value[0], states_value[1]];
+	  console.log(decoder_input);
     }
 	
     document.getElementById("test").innerHTML += prompt+'<br>'+decoded_sentence+'<br><br>';
