@@ -300,7 +300,9 @@ function change_div() {
 const node = document.getElementById("prompt");
 node.addEventListener("keyup", function(event) {
     if (event.key === "Enter") {
-        change_div();
+	tf.tidy(() => {
+        	change_div();
+	)};
     }
 });
 
