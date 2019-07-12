@@ -277,8 +277,9 @@ function change_div() {
 	let sampled_char = reply_ix_to_char[sampled_token_index]
         decoded_sentence += sampled_char
 	    
-	if (sampled_char == '\n' || decoded_sentence.length > 92):
+	if (sampled_char == '\n' || decoded_sentence.length > 92) {
             stop_condition = true
+	}
 	
 	 target_seq = [];
 	 for (let i=0;i<51;i++) {
@@ -292,9 +293,7 @@ function change_div() {
           states_value = [h, c]
     }
 	
-    document.getElementById("test").innerHTML += prompt;
-    document.getElementById("test").innerHTML += '<br>';
-    document.getElementById("test").innerHTML += decoded_sentence;
+    document.getElementById("test").innerHTML += prompt+'<br>'+decoded_sentence+'<br><br>';
     document.getElementById("prompt").value = '';
 
 }
