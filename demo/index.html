@@ -229,7 +229,8 @@ var prompt_char_to_ix = {'y': 0,
 
 function change_div() {
     let prompt = document.getElementById("prompt").value;
-    
+    document.getElementById("test").innerHTML += 'You: '+prompt+'<br>';
+	
     let prompt_vec = [];
     
     for (let i=0; i<prompt.length; i++) {
@@ -292,7 +293,7 @@ function change_div() {
 
     }
 	
-    document.getElementById("test").innerHTML += prompt+'<br>'+decoded_sentence+'<br><br>';
+    document.getElementById("test").innerHTML += 'MayaBot: '+decoded_sentence+'<br><br>';
     document.getElementById("prompt").value = '';
 
 }
