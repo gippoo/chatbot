@@ -244,14 +244,34 @@ function change_div() {
     let one_hot = tf.oneHot(tf.tensor1d(prompt_vec, 'int32'), 52);
 
     let input = one_hot.reshape([1,89,52]);
-
-    
-    one_hot.print();
     
     let states_value = encoder.predict(input);
-	
+
     console.log(states_value);
     
+    let target_seq = [];
+    for (let i=0;i<51;i++) {
+	if (i != reply_char_to_ix['\t']) {
+		target_seq.push(0);	
+	} else {
+		target_seq.push(1);
+	}
+    }
+	
+    target_seq = tf.tensor3d(target_seq, [1, 1, 51])
+    target_seq.print();
+	
+    let stop_condition = false;
+    let decoded_sentence = '';	
+	
+    let decoder_input = [target_seq, states_value];
+	
+	decoder.predict(decoder_input).print();
+
+//     while (!stop_condition) {
+//     	decoder.predict(decoder_input)
+//     }
+	
     document.getElementById("test").innerHTML += prompt;
     document.getElementById("test").innerHTML += '<br>';
     document.getElementById("prompt").value = '';
