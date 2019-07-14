@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gary Ip - monkaS</title>
+<title>Gary Ip - Chatbot</title>
 <link rel="shortcut icon" href="https://github.com/gippoo/gippoo.github.io/raw/master/favicon.ico" type="image/x-icon">
 <link rel="icon" href="https://github.com/gippoo/gippoo.github.io/raw/master/favicon.ico" type="image/x-icon">
 
@@ -63,15 +63,22 @@
 
 <div style="position: relative; top: 54px; text-align: center; font-family: Times">
     <figure>
-        <img src="https://github.com/gippoo/chatbot/raw/master/maya1.png" width="155" height="232"/>
+        <img src="https://vignette.wikia.nocookie.net/aceattorney/images/0/02/Maya_Fey_Portrait_AA6.png/revision/latest/scale-to-width-down/310?cb=20160407182727" width="155" height="232"/>
         <figcaption style="font-size: 12px;">Source: https://aceattorney.fandom.com/wiki/Maya_Fey</figcaption>
     </figure>
     <span style="font-size:32px;">Building a Chatbot</span>
 </div>
 <div style="position: relative; top: 54px; margin:auto; width: 700px; font-size:20px; font-family: Times;">
-    <p>After watching I'm not a Robot, I was inspired to create a chatbot using deep learning. After doing some research, it seems that many examples of conversational chatbots are trained on movie conversations or collections of comments from online forums such as Reddit. <br>To put my own spin on it, I decided to train my chatbot the personality of a character from a video game. Turns out that the Phoenix Wright series is great for this as the games are extremely rich in dialouge exchanged between characters. I settled on using Maya (pictured above) to be the character the chatbot would learn from.
+    <p><i>
+        If you just want to see a demo, click <a href="https://gippoo.github.io/chatbot/demo/">here</a>.
+    </i></p>
+    <p>After watching I'm not a Robot and obsessing over it, I was inspired to create some kind of AI you could interact with in a human-like way. Making a chatbot seemed like a good place to start.
+        <br>Rather than making a rule-based chatbot with several hard coded responses, I will be training it using deep learning techniques. So the outcome of this chatbot will depend on the data I use. What data should I use?</p>
+    <p>Since this chatbot is meant to have conversations with people, I needed a dataset containing pairs of prompts and replies. Through some Google searches, I discovered that most examples of conversational chatbots are trained on the <a href="https://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html">Cornell Movie Corpus</a> or a dataset of <a href="https://www.kaggle.com/reddit/reddit-comments-may-2015">Reddit comments</a>.</p>
+    <p>I didn't want to do something that was already done so to put my own spin on it. I decided to train my chatbot on dialogue of a character from a video game. Wouldn't it be so cool if you could talk to your favorite video game character and get a response from them? <br>I figured that the Phoenix Wright series would be great for this as the games are extremely text heavy and have many exchanges between characters. I settled on using Maya (pictured above) to be the character the chatbot would learn from.</p>
     </p>
-    <p>I found a <a href="https://gamefaqs.gamespot.com/ds/925589-phoenix-wright-ace-attorney/faqs/42767">game script</a> from the first game in the series. Here is a small snippet from the script:
+    <p>Fortunately, the games have been transcribed by fans. I will be using a <a href="https://gamefaqs.gamespot.com/ds/925589-phoenix-wright-ace-attorney/faqs/42767">game script</a> from the first game in the series.
+    <br>Here is a small snippet from the script:
         <pre style="font-size:16px">
             -Maya
             Ph-Phoenix...?
@@ -97,7 +104,7 @@
             Okay, let's do this.
         </pre>
     </p>
-    <p>Unfortunately, they entire document was not always this clean. There would be a lot of random extra spaces or symbols used. For example some parts of the script looked like this:
+    <p>Unfortunately, the entire document was not always this clean. There would be a lot of random extra spaces or symbols used. For example some parts of the script looked like this:
         <pre style="font-size:16px">
             * -Maya
             * Maybe it should just be
@@ -116,15 +123,10 @@
         </pre>
     </p>
     <p>I did some basic cleaning first using the built in 'Find and Replace' functionality of notepad and then using Python string manipulations, such as making all text lowercase.
-        <br>Then I wrote an algorithm to extract all of Maya's lines, which are the 'replies', and also the lines before each of Maya's lines, which are the 'prompts'.
+        <br>Then I wrote an algorithm to extract all of Maya's lines, which are the 'replies', and also the previous line right before each of Maya's lines, which are the 'prompts'.
     </p>
-    <p>In the end we are left with two arrays of strings: one with prompts and one with Maya's responses. Both arrays are of length 2116. Let's look at the first 5 of these pairs:
-        <pre class="code"><code>
-    for i in range(5):
-        print("PROMPT: "+prompt[i])
-        print("REPLY: "+reply[i])
-        print('\n')
-        </code></pre>
+    <p>In the end we are left with 2116 prompt-reply pairs. This is a rather small collection considering the amount of text that typically gets used in NLP projects. <br>Let's look at the first 5 of these prompt-reply pairs:
+
     </p>
     <p>
         <pre style="font-size:16px">
@@ -149,10 +151,11 @@
         </pre>
     </p>
     
-    <p>Some improvements could be made here. For example, Maya sometimes says multiple lines in succession so when extracting prompt and reply pairs, there are cases where she sometimes responds to herself. You can see this in the output above where she replies to her own reply. <br>Perhaps I'll come back and refine this at a later time, but it should still be okay since for these intial stages we mainly care about gathering data on Maya's replies to ANYTHING.</p>
+    <p>Some improvements could be made here. In the original script, Maya sometimes says multiple lines in succession so, when extracting prompt and reply pairs, there are cases where she sometimes responds to herself. You can see this in the output above where she replies to her own reply. <br>There are probably some regex expressions that could be used to address this but I couldn't think of anything simple to implement. So I decided to proceed with what I had which should still be okay since we mainly care about gathering data on Maya's replies to ANYTHING (even herself).</p>
     
-    <p>Next, we need to decide whether we want to preprocess the text at a character level or at the word level. There are advantages and disadvatanges to both but I decided to go with the character level because of faster training time.</p>
-    <p>We will be using an LSTM encoder-decoder model outlined in the <a href="https://blog.keras.io/a-ten-minute-introduction-to-sequence-to-sequence-learning-in-keras.html">Keras Blog</a> post on seq2seq models.
+    <p>Next, I chose to tokenize the text at a character level. In hindsight, the word level was probably a much better choice but I at the time, I just wanted to get something working and didn't want to deal with any more preprocessing. I will definitely come back and try this with word level tokenizing.</p>
+    <p>
+    The model I am using is the LSTM encoder-decoder model outlined in the <a href="https://blog.keras.io/a-ten-minute-introduction-to-sequence-to-sequence-learning-in-keras.html">Keras Blog</a> post on seq2seq models. 
     </p>
     <p>This requires us to have 3 arrays of data to use for training: the input prompt, the input reply, and the output reply. <br>-The input prompt is simply an array of the prompts. <br>-The input reply is each reply with a START token placed at the beginning. <br>-The output replies have no START token but instead have an END token placed at the end of each line. The result is two arrays of replies with the output replies offset by 1 position.</p>
     <p>To preprocess the text, we build a dictionary that maps each character to a unique index value. We actually need two of these dictionaries, one for the prompts, and one for the replies since there may be characters present in the prompts which are not in the replies and vice versa. While we're at it, we can also create dictionaries that map the index value back to the character.
@@ -203,8 +206,7 @@
     </code></pre>
 
     </p>
-    <p>As an example, we can look at one prompt and reply before and after processing.
-    </p>
+
     <p>Finally we can build the model and start training. The model is largely identical to the one in the Keras Blog.
     <pre class="code"><code>
     encoder_inputs = Input(shape=(None, prompt_feature_size))
@@ -246,12 +248,12 @@ Total params: 191,411
 Trainable params: 191,411
 Non-trainable params: 0
     </pre></p>
-    <p>I trained the model for 700 epochs which probably was too much in hindsight. Half the amount was sufficient. Also note that we didn't need to hold out any data for validation since there isn't really such a thing as a "correct" reply that we are trying to get.
+    <p>I trained the model for 700 epochs which was just an arbitrary choice. Note that I didn't need to hold out any data for validation since there isn't really such a thing as a "correct" reply to a prompt. We just want any reply that hopefully makes some kind of sense.
         <pre class="code"><code>
     model.fit([X, y_input], y_output, epochs=700)
         </code></pre>
     </p>
-    <p>Before we can use the trained model, we need some helper functions to process any prompts we give it and also to change the model output back into text.
+    <p>Before using the trained model, we need some helper functions to process any prompts we give it and also to change the model output back into text.
     <pre class="code"><code>
     # Function to process our own prompts
     def process_question(question):
@@ -323,6 +325,12 @@ Non-trainable params: 0
     </pre>
 
     </p>
+    
+    <p>
+        Right away we can see that the bot sometimes replies with words that aren't actually words. This is one of the disadvantages of using a character level model. A word level model would not have this issue.
+        <br>Also, a lot of the replies don't fit the context of the prompt. That is likely because most of the game dialogue is not really how normal everyday conversations would go so the bot would not have learned how to respond properly to simple questions like "how are you doing?"</p>
+    <p>It is interesting to see that the bot has captured some of Maya's personality. In the game she says "Nick!" a lot, which is her nickname for the main protagonist. She also says "Huh?" or "What!?" a lot too which the bot seems to have picked up on.</p>
+    <p>If you want to interact with the bot yourself, I made a fun demo <a href="https://gippoo.github.io/chatbot/demo/">here</a>.
     
     
 </div>
