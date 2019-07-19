@@ -2,7 +2,7 @@ async function init() {
   encoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/encoder/model.json');
 	decoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/decoder/model.json');
   
-  decoder.predict([tf.zeros([1,1,51]), encoder.predict(tf.zeros([1,89,52]))[0], encoder.predict(tf.zeros([1,89,52]))[1]]).dispose();
+  decoder.predict([tf.zeros([1,1,51]), encoder.predict(tf.zeros([1,89,52]))[0], encoder.predict(tf.zeros([1,89,52]))[1]])]).dispose();
 }
 	
 init();
