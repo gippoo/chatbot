@@ -66,7 +66,7 @@ function change_div() {
 	
     	let sampled_token_index = parseInt(output_tokens.squeeze().argMax().dataSync());
     	let sampled_char = reply_ix_to_char[sampled_token_index];
-        decoded_sentence += sampled_char;
+        decoded_sentence += sampled_char+" ";
 	    
     	if (sampled_char == 'eos' || decoded_sentence.length > 92) {
             stop_condition = true;
@@ -78,7 +78,7 @@ function change_div() {
         decoder_input = [target_seq, states_value[0], states_value[1]];
     }
 	
-    document.getElementById("text").innerHTML += 'MayaBot: '+decoded_sentence+'<br><br>';
+    document.getElementById("text").innerHTML += 'MayaBot: '+decoded_sentence.slice(0, -3)+'<br><br>';
     document.getElementById("prompt").value = '';
     document.getElementById("image").src = gifs[Math.floor(Math.random()*gifs.length)];
     updateScroll();
