@@ -16,6 +16,7 @@ async function load_models() {
         let warmUpDec = [tf.zeros([1, 1]), warmUpStates[0], warmUpStates[1]];
         decoder.predict(warmUpDec);
     });
+
     console.log("Warmed Up");
 }
 	
