@@ -7,16 +7,16 @@ const load_models = async() => {
     encoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/encoder/model.json');
     console.log("Encoder loaded");
     
-	decoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/decoder/model.json');
-	console.log("Decoder loaded");
+    decoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/decoder/model.json');
+    console.log("Decoder loaded");
 	
 	
-	tf.tidy(() => {
+    tf.tidy(() => {
         let warmUpEnc = tf.zeros([1, 89, 52]);
-	    let warmUpStates = encoder.predict(warmUpEnc);
-	    let warmUpDec = [tf.zeros([1, 1]), warmUpStates[0], warmUpStates[1]];
-	    decoder.predict(warmUpDec);
-	});
+        let warmUpStates = encoder.predict(warmUpEnc);
+        let warmUpDec = [tf.zeros([1, 1]), warmUpStates[0], warmUpStates[1]];
+        decoder.predict(warmUpDec);
+    });
 }
 
 var gifs = ['https://thumbs.gfycat.com/EnormousIdleChickadee.webp', 'https://thumbs.gfycat.com/BogusGloriousCuscus.webp', 
@@ -67,12 +67,12 @@ function change_div() {
 	    
     	if (sampled_char == 'eos' || decoded_sentence.length > 92) {
             stop_condition = true;
-	    }
+    	}
 	
         target_seq = tf.tensor2d([sampled_token_index], [1, 1]);
         
         states_value = [h, c];
-	    decoder_input = [target_seq, states_value[0], states_value[1]];
+        decoder_input = [target_seq, states_value[0], states_value[1]];
     }
 	
     document.getElementById("text").innerHTML += 'MayaBot: '+decoded_sentence+'<br><br>';
