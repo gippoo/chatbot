@@ -4,10 +4,10 @@ let decoder;
 const load_models = async() => {
     console.log("Loading...");
 
-    encoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/encoder/model.json');
+    encoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/encoder2/model.json');
     console.log("Encoder loaded");
     
-    decoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/decoder/model.json');
+    decoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/decoder2/model.json');
     console.log("Decoder loaded");
 	
 	
