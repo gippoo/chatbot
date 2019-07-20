@@ -1,7 +1,7 @@
 let encoder;
 let decoder;
 
-const load_models = async() => {
+async function load_models() {
     console.log("Loading...");
 
     encoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/encoder2/model.json');
@@ -10,14 +10,16 @@ const load_models = async() => {
     decoder = await tf.loadLayersModel('https://gippoo.github.io/chatbot/decoder2/model.json');
     console.log("Decoder loaded");
 	
-	
     tf.tidy(() => {
         let warmUpEnc = tf.zeros([1, 89, 52]);
         let warmUpStates = encoder.predict(warmUpEnc);
         let warmUpDec = [tf.zeros([1, 1]), warmUpStates[0], warmUpStates[1]];
         decoder.predict(warmUpDec);
     });
+    console.log("Warmed Up");
 }
+	
+load_models();
 
 var gifs = ['https://thumbs.gfycat.com/EnormousIdleChickadee.webp', 'https://thumbs.gfycat.com/BogusGloriousCuscus.webp', 
 	    'https://thumbs.gfycat.com/DapperBelatedGoitered.webp'];
