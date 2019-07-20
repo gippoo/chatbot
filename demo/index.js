@@ -90,5 +90,3 @@ node.addEventListener("keyup", function(event) {
     	console.log(tf.memory());
     }
 });
-
-</script>
