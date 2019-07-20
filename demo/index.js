@@ -77,7 +77,7 @@ function change_div() {
         decoder_input = [target_seq, states_value[0], states_value[1]];
     }
 	
-    document.getElementById("text").innerHTML += 'MayaBot: '+decoded_sentence.slice(0, -3)+'<br><br>';
+    document.getElementById("text").innerHTML += 'MayaBot: '+decoded_sentence.slice(0, -4)+'<br><br>';
     document.getElementById("prompt").value = '';
     document.getElementById("image").src = gifs[Math.floor(Math.random()*gifs.length)];
     updateScroll();
