@@ -21,6 +21,16 @@
         color: #6da6ff;
     }
     
+    a:link {
+        color: #527ba1;
+    }
+    a:visited {
+        color: #527ba1;
+    }  
+    a:hover {
+        color: #bcd1e6;
+    }
+    
     div.header {
         position: absolute;
         left: 0;
@@ -66,18 +76,25 @@
         <img src="https://vignette.wikia.nocookie.net/aceattorney/images/0/02/Maya_Fey_Portrait_AA6.png/revision/latest/scale-to-width-down/310?cb=20160407182727" width="155" height="232"/>
         <figcaption style="font-size: 12px;">Source: https://aceattorney.fandom.com/wiki/Maya_Fey</figcaption>
     </figure>
-    <span style="font-size:32px;">Building a Chatbot</span>
+    <span style="font-size:34px;">Building a Chatbot</span>
 </div>
-<div style="position: relative; top: 54px; margin:auto; width: 700px; font-size:20px; font-family: Times;">
+<div style="position: relative; top: 54px; margin:auto; width: 700px; font-size:18px; font-family: Times;">
     <p><i>
         If you just want to see a demo, click <a href="https://gippoo.github.io/chatbot/demo/">here</a>.
     </i></p>
-    <p>After watching I'm not a Robot and obsessing over it, I was inspired to create some kind of AI you could interact with in a human-like way. Making a chatbot seemed like a good place to start.
-        <br>Rather than making a rule-based chatbot with several hard coded responses, I will be training it using deep learning techniques. So the outcome of this chatbot will depend on the data I use. What data should I use?</p>
-    <p>Since this chatbot is meant to have conversations with people, I needed a dataset containing pairs of prompts and replies. Through some Google searches, I discovered that most examples of conversational chatbots are trained on the <a href="https://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html">Cornell Movie Corpus</a> or a dataset of <a href="https://www.kaggle.com/reddit/reddit-comments-may-2015">Reddit comments</a>.</p>
-    <p>I didn't want to do something that was already done so to put my own spin on it. I decided to train my chatbot on dialogue of a character from a video game. Wouldn't it be so cool if you could talk to your favorite video game character and get a response from them? <br>I figured that the Phoenix Wright series would be great for this as the games are extremely text heavy and have many exchanges between characters. I settled on using Maya (pictured above) to be the character the chatbot would learn from.</p>
+    <span style="font-size:28px; font-family:arial;"><u>Motivation</u></span>
+    <p>After watching I'm not a Robot and obsessing over it, I was inspired to create some kind of AI you could interact with in a human-like way. Making a chatbot seemed like a good place to start.</p>
+    <p>There are a multitude of chatbots made for different purposes and are coded in different ways.
+        <br>Some chatbots are made to help people with specific tasks such as getting information. I decided to make a conversational chatbot whose purpose is just to have random conversations. <br>While some chatbots are rule-based with several hard coded responses, I will be training mines using deep learning and natural language processing.</p>
+    <span style="font-size:28px; font-family:arial;"><u>Data</u></span>
+    <p>The replies that this chatbot will give is going to largely depend on the data it is trained on.</p>
+    <p>I needed to find a dataset containing pairs of prompts and replies. Through some Google searches, I discovered that most examples of conversational chatbots are trained on the <a href="https://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html">Cornell Movie Corpus</a> or a dataset of <a href="https://www.kaggle.com/reddit/reddit-comments-may-2015">Reddit comments</a>. These datasets contain several prompts and respones to those prompts.</p>
+    <p>However, I didn't want to do something that was already done. So to put my own spin on it, I decided to train my chatbot to respond like a character from a video game. 
+    <br>I thought to myself: It would be so cool if you could talk to your favorite video game character and get replies from them.</p>
+    <p>What character should I use? 
+    <br>After some thought, I figured that the Phoenix Wright series would be great for this as the games are rich in text and have many exchanges between characters. I settled on using Maya (pictured above) to be the character the chatbot would learn from.</p>
     </p>
-    <p>Fortunately, the games have been transcribed by fans. I will be using a <a href="https://gamefaqs.gamespot.com/ds/925589-phoenix-wright-ace-attorney/faqs/42767">game script</a> from the first game in the series.
+    <p>Fortunately, the games have been transcribed by fans so all the data I needed was already out there. I used a <a href="https://gamefaqs.gamespot.com/ds/925589-phoenix-wright-ace-attorney/faqs/42767">game script</a> from the first game in the series.
     <br>Here is a small snippet from the script:
         <pre style="font-size:16px">
             -Maya
@@ -122,10 +139,11 @@
             * Um, Detective.
         </pre>
     </p>
-    <p>I did some basic cleaning first using the built in 'Find and Replace' functionality of notepad and then using Python string manipulations, such as making all text lowercase.
-        <br>Then I wrote an algorithm to extract all of Maya's lines, which are the 'replies', and also the previous line right before each of Maya's lines, which are the 'prompts'.
+    <p>All those asterisks were quite bothersome. 
+    <br>I did some basic cleaning first using the built in 'Find and Replace' functionality of notepad and then more nuanced cleaning by writing a few Python scripts.</p>
+        <p>Then I wrote a function to extract the lines of any character as well as the line directly before it. Of course, I used this function to get Maya's lines which were stored as the 'replies'. The previous lines directly before each of Maya's lines, were stored as the 'prompts'.
     </p>
-    <p>In the end we are left with 2116 prompt-reply pairs. This is a rather small collection considering the amount of text that typically gets used in NLP projects. <br>Let's look at the first 5 of these prompt-reply pairs:
+    <p>In the end we are left with 2116 prompt-reply pairs. This is a very small collection of data considering the amount of text that typically gets used in NLP projects. <br>Anyways, let's look at the first 5 of these prompt-reply pairs:
 
     </p>
     <p>
@@ -151,72 +169,64 @@
         </pre>
     </p>
     
-    <p>Some improvements could be made here. In the original script, Maya sometimes says multiple lines in succession so, when extracting prompt and reply pairs, there are cases where she sometimes responds to herself. You can see this in the output above where she replies to her own reply. <br>There are probably some regex expressions that could be used to address this but I couldn't think of anything simple to implement. So I decided to proceed with what I had which should still be okay since we mainly care about gathering data on Maya's replies to ANYTHING (even herself).</p>
+    <p>Some improvements could be made here. In the original script, Maya sometimes says multiple lines in succession so, when extracting prompt and reply pairs, there are cases where she sometimes responds to herself. You can see this in the output above where she replies to her own reply.</p>
+    <p>There are probably some regex expressions that could be used to address this but I couldn't think of anything simple to implement. So I decided to proceed with what I had which should still be okay since we mainly care about gathering data on Maya's replies to ANYTHING (even herself).</p>
     
-    <p>Next, I chose to tokenize the text at a character level. In hindsight, the word level was probably a much better choice but I at the time, I just wanted to get something working and didn't want to deal with any more preprocessing. I will definitely come back and try this with word level tokenizing.</p>
-    <p>
-    The model I am using is the LSTM encoder-decoder model outlined in the <a href="https://blog.keras.io/a-ten-minute-introduction-to-sequence-to-sequence-learning-in-keras.html">Keras Blog</a> post on seq2seq models. 
+    <span style="font-size:28px; font-family:arial;"><u>Preprocessing Data</u></span>
+    <p>Most, if not all, statistical models cannot work with pure text. They only work with numbers. So I needed to convert text into numbers to feed into the model. <br>The first step of this is to tokenize the data. The two most common ways of doing this is breaking down each line into every individual character. Or breaking down each line into every individual word.</p>
+    <p>I wanted the chatbot to be able to respond to any input from a human. If I had tokenized the prompts at the word level, then because of the small data size, there would be a lot of words the user could type which would be unknown because they did not show up in the training data.</p>
+    <p>So I decided to tokenize the prompts at a character level which would allow for more flexibility in what the user types in. In hindsight, it probably still would have been fine to tokenize at the word level and use an "UNKNOWN" token for words not encountered before.</p>
+    <p>Next, I chose to tokenize the replies at the word level. This allows the chatbot to reply with a fixed set of words that Maya actually used in the game. It also prevents the bot from coming up with random jumbles of letters.</p>
+    <p>This is very interesting because in most sequence-to-sequence problems, the tokenzing is done at the same level for both input and output. I was curious to see what was going to happen if I did the tokenizing differently for the input and output sequences.
     </p>
-    <p>This requires us to have 3 arrays of data to use for training: the input prompt, the input reply, and the output reply. <br>-The input prompt is simply an array of the prompts. <br>-The input reply is each reply with a START token placed at the beginning. <br>-The output replies have no START token but instead have an END token placed at the end of each line. The result is two arrays of replies with the output replies offset by 1 position.</p>
-    <p>To preprocess the text, we build a dictionary that maps each character to a unique index value. We actually need two of these dictionaries, one for the prompts, and one for the replies since there may be characters present in the prompts which are not in the replies and vice versa. While we're at it, we can also create dictionaries that map the index value back to the character.
-        <pre class="code"><code>
-    prompt_chars = set(' '.join(prompt))
-    reply_chars = set(' '.join(reply))
+    <p>To preprocess the prompts, I built a dictionary that maps each unique character to a unique index value and vice versa.
+    <br>For the replies, I did the same thing except each unique WORD is mapped to a unique index value and vice versa.
+    </p>
+    <p>Here are the first 10 key-value pairs in the word dictionary:
+        <pre style="font-size:16px">
+    {0: 'PAD', 
+    1: 'missile', 
+    2: 'mmm', 
+    3: 'unsolved', 
+    4: 'overwhelmed', 
+    5: 'untold', 
+    6: 'classmate', 
+    7: 'confess', 
+    8: 'ooh', 
+    9: 'nooooooooooo', 
+    10: 'said'
+    ...}
+        </pre>
+    </p>
+    <p>For each prompt, I converted every character into its index value and then one-hot encoded those values. The result of each prompt is a matrix of shape:<br> (max line length, number of unique characters)</p>
+    <p>For each reply, I converted each word to its index value and left it as a single array of values. This serves as the second input for the model.
+    <br>Then I did the same thing but instead also one-hot encoded the values. This was the target output of the model.
+    <p>You can see how the phrase below gets converted to an array of values based on the dictionary above.</p>
+    <pre style="font-size:16px">
+    "classmate said missle"
     
-    prompt_char_to_ix = dict((c, i) for i, c in enumerate(prompt_chars))
-    prompt_ix_to_char = dict((i, c) for i, c in enumerate(prompt_chars))
-    reply_char_to_ix = dict((c, i) for i, c in enumerate(reply_chars))
-    reply_ix_to_char = dict((i, c) for i, c in enumerate(reply_chars))
-        </code></pre>
+    [6, 10, 1]
+    </pre>
+
     </p>
-    <p>Now, for each line of dialouge, we convert each character into its index value and then one-hot encode each value. The result of each line is a matrix of shape:<br> (max line length, number of unique characters) 
+    <p>Once all the preprocessing was done, I ended up with a huge array of values which represented the text. 
+    <br>Finally I could build the model and start training it. </p>
+    <span style="font-size:28px; font-family:arial;"><u>The Model</u></span>
+    <p>The model is largely identical to the one in the <a href="https://blog.keras.io/a-ten-minute-introduction-to-sequence-to-sequence-learning-in-keras.html">Keras Blog</a> post on seq2seq models except I am using an added embedding layer for the decoder input.
     <pre class="code"><code>
-    # Processing the prompts
-    X = []
+    hidden_dim = 64
     
-    for line in prompt:
-        one_hot = np.zeros((max_prompt_len, prompt_feature_size))
-        x_seq = [prompt_char_to_ix[c] for c in line]
-        for j in range(len(x_seq)):
-            one_hot[j][x_seq[j]] = 1
-        X.append(one_hot)
-    X = np.asarray(X)
-    
-    # Processing the replies
-    # Function to add start and end tokens
-    def start_end(line):
-        line = '\t'+line+'\n'
-        return line
-        
-    Y = [start_end(line) for line in reply]
-    
-    y = []
-
-    for line in Y:
-        one_hot = np.zeros((max_reply_len, reply_feature_size))
-        y_seq = [reply_char_to_ix[c] for c in line]
-        for j in range(len(y_seq)):
-            one_hot[j][y_seq[j]] = 1
-        y.append(one_hot)
-    y = np.asarray(y)
-    
-    # Split replies into input and output replies
-    y_input = y[:,:max_reply_len-1,:]
-    y_output = y[:,1:,:]
-    </code></pre>
-
-    </p>
-
-    <p>Finally we can build the model and start training. The model is largely identical to the one in the Keras Blog.
-    <pre class="code"><code>
     encoder_inputs = Input(shape=(None, prompt_feature_size))
-    encoder = LSTM(128, return_state=True)
+    encoder = LSTM(hidden_dim, return_state=True)
     encoder_outputs, state_h, state_c = encoder(encoder_inputs)
     encoder_states = [state_h, state_c]
 
-    decoder_inputs = Input(shape=(None, reply_feature_size))
-    decoder_lstm = LSTM(128, return_sequences=True, return_state=True)
-    decoder_outputs, _, _ = decoder_lstm(decoder_inputs,
+    decoder_inputs = Input(shape=(None,))
+    decoder_embed = Embedding(reply_feature_size, hidden_dim)
+    embedded = decoder_embed(decoder_inputs)
+
+    decoder_lstm = LSTM(hidden_dim, return_sequences=True, return_state=True)
+    decoder_outputs, _, _ = decoder_lstm(embedded,
                                          initial_state=encoder_states)
     decoder_dense = Dense(reply_feature_size, activation='softmax')
     decoder_outputs = decoder_dense(decoder_outputs)
@@ -225,111 +235,71 @@
     
     model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
     
-    model.summary()        
-        
+    model.summary()      
     </code></pre>
     <pre style="font-size:12px">
-__________________________________________________________________________________________________
+_______________________________________________________________________________________________
 Layer (type)                    Output Shape         Param #     Connected to                     
-==================================================================================================
-input_3 (InputLayer)            (None, None, 52)     0                                            
-__________________________________________________________________________________________________
-input_4 (InputLayer)            (None, None, 51)     0                                            
-__________________________________________________________________________________________________
-lstm_3 (LSTM)                   [(None, 128), (None, 92672       input_3[0][0]                    
-__________________________________________________________________________________________________
-lstm_4 (LSTM)                   [(None, None, 128),  92160       input_4[0][0]                    
-                                                                 lstm_3[0][1]                     
-                                                                 lstm_3[0][2]                     
-__________________________________________________________________________________________________
-dense_2 (Dense)                 (None, None, 51)     6579        lstm_4[0][0]                     
-==================================================================================================
-Total params: 191,411
-Trainable params: 191,411
+===============================================================================================
+input_2 (InputLayer)            (None, None)         0                                            
+_______________________________________________________________________________________________
+input_1 (InputLayer)            (None, None, 52)     0                                            
+_______________________________________________________________________________________________
+embedding_1 (Embedding)         (None, None, 64)     113088      input_2[0][0]                    
+_______________________________________________________________________________________________
+lstm_1 (LSTM)                   [(None, 64), (None,  29952       input_1[0][0]                    
+_______________________________________________________________________________________________
+lstm_2 (LSTM)                   [(None, None, 64), ( 33024       embedding_1[0][0]                
+                                                                 lstm_1[0][1]                     
+                                                                 lstm_1[0][2]                     
+_______________________________________________________________________________________________
+dense_1 (Dense)                 (None, None, 1767)   114855      lstm_2[0][0]                     
+===============================================================================================
+Total params: 290,919
+Trainable params: 290,919
 Non-trainable params: 0
+_______________________________________________________________________________________________
     </pre></p>
-    <p>I trained the model for 700 epochs which was just an arbitrary choice. Note that I didn't need to hold out any data for validation since there isn't really such a thing as a "correct" reply to a prompt. We just want any reply that hopefully makes some kind of sense.
+    <p>I trained the model for 1000 epochs which was just an arbitrary choice. Note that I didn't need to hold out any data for validation since there isn't really such a thing as a "correct" reply to a prompt. I just wanted any reply that hopefully makes some kind of sense.
         <pre class="code"><code>
-    model.fit([X, y_input], y_output, epochs=700)
+    model.fit([X, y_input], y_output, epochs=1000)
         </code></pre>
     </p>
-    <p>Before using the trained model, we need some helper functions to process any prompts we give it and also to change the model output back into text.
-    <pre class="code"><code>
-    # Function to process our own prompts
-    def process_question(question):
-        question_vec = [prompt_char_to_ix[c] for c in question]
-        
-        one_hot = np.zeros((max_prompt_len, prompt_feature_size))
-        
-        for j in range(len(question_vec)):
-            one_hot[j][question_vec[j]] = 1
-        
-        return one_hot.reshape(-1,max_prompt_len,prompt_feature_size)
-        
-    # Function to get a reply from the model and convert it to text
-    def gen_reply(question):
-        question = process_question(question)
-        
-        states_value = encoder_model.predict(question)
-        
-        target_seq = np.zeros((1, 1, reply_feature_size))
-        target_seq[0, 0, reply_char_to_ix['\t']] = 1.
-        
-        stop_condition = False
-        decoded_sentence = ''
-        
-        while not stop_condition:
-            output_tokens, h, c = decoder_model.predict([target_seq] 
-                                                        + states_value)
-            
-            sampled_token_index = np.argmax(output_tokens[0, -1, :])
-            sampled_char = reply_ix_to_char[sampled_token_index]
-            decoded_sentence += sampled_char
-            
-            if (sampled_char == '\n' 
-                or len(decoded_sentence) > max_reply_len):
-                stop_condition = True
-    
-            target_seq = np.zeros((1, 1, reply_feature_size))
-            target_seq[0, 0, sampled_token_index] = 1.
-            
-            states_value = [h, c]
-            
-        return decoded_sentence
-    </code></pre></p>
-    <p>FINALLY we can start interacting with our chatbot.
+    <p>Training took about 2.5 hours on a CPU and the loss had yet to converge.
+</p>
+    <p>Before using the trained model, I had to write some helper functions to process any prompts a human could give it and also to change the model output back into text.
+</p>
+    <span style="font-size:28px; font-family:arial;"><u>Results</u></span>
+    <p>Now we can start interacting with our chatbot.
     <pre style="font-size:16px">
-    Me: hi
-    MayaBot: i was really sorry'se callma!
+    Me: hello there
+    MayaBot: hey hey larry . whats he talking about ? 
     
-    Me: what are you sorry about?
-    MayaBot: this is the ficoston! too...
+    Me: who is larry?
+    MayaBot: hey hey nick . 
     
-    Me: what is the ficoston?
-    MayaBot: this is all tied to the dl-6 incident...
+    Me: i am not nick
+    MayaBot: i was sure it was because the lake looked like a gourd when viewed from above ! 
     
-    Me: what happened in the incident?
-    MayaBot: old wird mos like the sild, i'm noting on locken "sus "lissel, ergs!
+    Me: lake?
+    MayaBot: nick ?
     
-    Me: uh that didn't make sense
-    MayaBot: h-huh!? o-w-ow...
+    Me: i told you i am not nick
+    MayaBot: and im she sure then morning maybe this doctor is a lie !
     
-    Me: that actually made sense
-    MayaBot: nick!
+    Me: that doesn't make sense
+    MayaBot: i wonder why the caretaker didnt take the letter with him ? 
     
-    Me: im not nick
-    MayaBot: what!?
-    
-    Me: ok bye.
-    MayaBot: nick! look! a lott!
+    Me: ok bye
+    MayaBot: nick ? 
     </pre>
 
     </p>
     
     <p>
-        Right away we can see that the bot sometimes replies with words that aren't actually words. This is one of the disadvantages of using a character level model. A word level model would not have this issue.
-        <br>Also, a lot of the replies don't fit the context of the prompt. That is likely because most of the game dialogue is not really how normal everyday conversations would go so the bot would not have learned how to respond properly to simple questions like "how are you doing?"</p>
-    <p>It is interesting to see that the bot has captured some of Maya's personality. In the game she says "Nick!" a lot, which is her nickname for the main protagonist. She also says "Huh?" or "What!?" a lot too which the bot seems to have picked up on.</p>
+        Right away we can see that a lot of the replies don't fit the context of the prompt. That is likely because most of the game dialogue is not really how normal everyday conversations would go. 
+        <br>So the bot would not have learned how to respond properly to simple questions like "how are you doing?"</p>
+    <p>It is interesting to see that the bot has captured some of Maya's personality. In the game she says "Nick" a lot, which is her nickname for the main protagonist. She also says "...!" or "What!?" a lot too which the bot seems to have picked up on.</p>
     <p>If you want to interact with the bot yourself, I made a fun demo <a href="https://gippoo.github.io/chatbot/demo/">here</a>.
     
     
